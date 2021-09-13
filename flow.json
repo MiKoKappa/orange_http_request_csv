@@ -1,0 +1,252 @@
+[
+    {
+        "id": "c692bd39.0da23",
+        "type": "change",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "headers[\"content-type\"]",
+                "pt": "msg",
+                "to": "multipart/form-data",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t    \"\": {\t        \"value\": msg.payload,\t        \"options\": {\t            \"filename\": msg.filename\t        }\t    }\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 700,
+        "wires": [
+            [
+                "a9952943.c814a8"
+            ]
+        ]
+    },
+    {
+        "id": "a9952943.c814a8",
+        "type": "http request",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://192.168.1.22:1880/files",
+        "tls": "44ebd725.b22e98",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 650,
+        "y": 700,
+        "wires": [
+            [
+                "195c7ced.9e61f3"
+            ]
+        ]
+    },
+    {
+        "id": "195c7ced.9e61f3",
+        "type": "debug",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "d1bbfac3.143218",
+        "type": "comment",
+        "z": "3bf62580.1dea7a",
+        "name": "Wysłanie CSV",
+        "info": "",
+        "x": 490,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "50bdec8b.d89ac4",
+        "type": "comment",
+        "z": "3bf62580.1dea7a",
+        "name": "Wejście msg.payload = buffer pliku",
+        "info": "",
+        "x": 200,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "fab4a438.167968",
+        "type": "comment",
+        "z": "3bf62580.1dea7a",
+        "name": "Otrzymanie CSV",
+        "info": "",
+        "x": 500,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "4d83b4ae.003bac",
+        "type": "http in",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "url": "/files",
+        "method": "post",
+        "upload": true,
+        "swaggerDoc": "",
+        "x": 300,
+        "y": 900,
+        "wires": [
+            [
+                "ed7fc9c.de16e38",
+                "a4870ced.587b1"
+            ]
+        ]
+    },
+    {
+        "id": "9f0fb250.d2e2e",
+        "type": "http response",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 650,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "ed7fc9c.de16e38",
+        "type": "change",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "File upload succesful!",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 900,
+        "wires": [
+            [
+                "9f0fb250.d2e2e"
+            ]
+        ]
+    },
+    {
+        "id": "a4870ced.587b1",
+        "type": "function",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "func": "msg.payload = (msg.req.files[0].buffer).toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 840,
+        "wires": [
+            [
+                "2098374c.d593d8"
+            ]
+        ]
+    },
+    {
+        "id": "21e46f18.47b05",
+        "type": "debug",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "2098374c.d593d8",
+        "type": "csv",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "sep": ";",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 590,
+        "y": 840,
+        "wires": [
+            [
+                "21e46f18.47b05"
+            ]
+        ]
+    },
+    {
+        "id": "6671f8ce.b4ce48",
+        "type": "comment",
+        "z": "3bf62580.1dea7a",
+        "name": "Post route",
+        "info": "",
+        "x": 280,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "b1028d00.cc812",
+        "type": "comment",
+        "z": "3bf62580.1dea7a",
+        "name": "Wyjście msg.payload = obiekty JS z danymi z CSV",
+        "info": "",
+        "x": 1050,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "44ebd725.b22e98",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false
+    }
+]
