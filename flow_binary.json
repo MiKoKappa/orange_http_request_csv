@@ -1,0 +1,228 @@
+[
+    {
+        "id": "dcbd8e81.59dc",
+        "type": "http in",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "url": "/filein",
+        "method": "post",
+        "upload": true,
+        "swaggerDoc": "",
+        "x": 250,
+        "y": 1060,
+        "wires": [
+            [
+                "aeedb842.f23b48",
+                "e3174e25.895ed",
+                "527b5fc1.186c4"
+            ]
+        ]
+    },
+    {
+        "id": "aeedb842.f23b48",
+        "type": "debug",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "2e9e10c1.67d64",
+        "type": "http response",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 630,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "21ad1d4c.657722",
+        "type": "http request",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://192.168.1.22:1880/testRaw",
+        "tls": "44ebd725.b22e98",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 690,
+        "y": 1240,
+        "wires": [
+            [
+                "9b1bc75a.971a28"
+            ]
+        ]
+    },
+    {
+        "id": "9b1bc75a.971a28",
+        "type": "debug",
+        "z": "3bf62580.1dea7a",
+        "name": "Response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "90c66c55.511",
+        "type": "fileinject",
+        "z": "3bf62580.1dea7a",
+        "name": "Wejście pliku",
+        "x": 230,
+        "y": 1240,
+        "wires": [
+            [
+                "d3bb8cb3.95d5b",
+                "70636962.8411b8"
+            ]
+        ]
+    },
+    {
+        "id": "70636962.8411b8",
+        "type": "debug",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 430,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "e3174e25.895ed",
+        "type": "function",
+        "z": "3bf62580.1dea7a",
+        "name": "Zamiana msg.payload na CSV",
+        "func": "msg.payload = (msg.req._readableState.buffer.head.data).toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 1060,
+        "wires": [
+            [
+                "dbf676c.81a6d88"
+            ]
+        ]
+    },
+    {
+        "id": "dbf676c.81a6d88",
+        "type": "debug",
+        "z": "3bf62580.1dea7a",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "d3bb8cb3.95d5b",
+        "type": "change",
+        "z": "3bf62580.1dea7a",
+        "name": "Ustawienie nagłówków",
+        "rules": [
+            {
+                "t": "set",
+                "p": "headers[\"content-type\"]",
+                "pt": "msg",
+                "to": "text/csv",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "headers[\"accept\"]",
+                "pt": "msg",
+                "to": "*/*",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 450,
+        "y": 1240,
+        "wires": [
+            [
+                "21ad1d4c.657722"
+            ]
+        ]
+    },
+    {
+        "id": "527b5fc1.186c4",
+        "type": "change",
+        "z": "3bf62580.1dea7a",
+        "name": "Ustawienie komunikatu",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "File upload succesful!",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 450,
+        "y": 1000,
+        "wires": [
+            [
+                "2e9e10c1.67d64"
+            ]
+        ]
+    },
+    {
+        "id": "44ebd725.b22e98",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false
+    }
+]
